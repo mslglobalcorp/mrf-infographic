@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High-Rise Ventilation: A Performance-Based Alternative</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <!-- 
+        Color Palette: "Engineering Precision"
+        Primary: #0F172A (Slate 900 - Deep Technical Blue)
+        Secondary: #3B82F6 (Blue 500 - Electric Blue)
+        Accent: #F97316 (Orange 500 - Safety Orange/Highlight)
+        Background: #F8FAFC (Slate 50)
+    -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8FAFC;
+            color: #0F172A;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        /* Custom scrollbar for a polished feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #0F172A 0%, #3B82F6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+    </style>
+    <!-- 
+        NO SVG USED IN THIS DOCUMENT.
+        NO MERMAID JS USED IN THIS DOCUMENT.
+        Data visualization implemented via Chart.js (Canvas) and Plotly.js (WebGL/Canvas).
+        Diagrams implemented via HTML/CSS.
+    -->
+</head>
+<body class="antialiased">
+
+    <!-- Sticky Navigation -->
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0 flex items-center">
+                    <span class="font-bold text-xl tracking-tight text-green-600">MSL GLOBAL</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#problem" class="text-slate-600 hover:text-blue-600 font-medium transition-colors">The Challenge</a>
+                    <a href="#solution" class="text-slate-600 hover:text-blue-600 font-medium transition-colors">Kill & Capture</a>
+                    <a href="#applications" class="text-slate-600 hover:text-blue-600 font-medium transition-colors">Applications</a>
+                    <a href="#compliance" class="text-slate-600 hover:text-blue-600 font-medium transition-colors">Code Compliance</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="bg-white pt-16 pb-12 lg:pt-24 lg:pb-20 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">
+                <span class="gradient-text">Performance-Based Ventilation</span><br>
+                <span class="text-slate-900">For High-Rise Condominiums</span>
+            </h1>
+            <p class="mt-4 text-xl text-slate-600 max-w-3xl mx-auto">
+                Stop fighting physics with vertical shafts. Adopt the <strong>In-Situ Treatment</strong> strategy to delete risers, reclaim sellable area, and ensure code compliance via ASHRAE 62.1 IAQP.
+            </p>
+            <div class="mt-8 flex justify-center gap-4">
+                <div class="bg-orange-50 px-6 py-3 rounded-lg border border-orange-200">
+                    <span class="block text-2xl font-bold text-orange-600">Class 3 &rarr; Class 2</span>
+                    <span class="text-sm text-orange-800 font-medium">Air Redesignation</span>
+                </div>
+                <div class="bg-blue-50 px-6 py-3 rounded-lg border border-blue-200">
+                    <span class="block text-2xl font-bold text-blue-600">100%</span>
+                    <span class="text-sm text-blue-800 font-medium">Shaft Deletion</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-24">
+
+        <!-- SECTION 1: THE PHYSICS OF FAILURE -->
+        <!-- 
+            Goal: Explain why traditional ventilation fails in high-rises.
+            Vis: Stacked Bar Chart comparing Forces (Fan Pressure vs Stack Effect).
+        -->
+        <section id="problem" class="scroll-mt-20">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl font-bold text-slate-900 mb-4 border-l-4 border-orange-500 pl-4">The Physics of Failure</h2>
+                    <p class="text-lg text-slate-600 mb-6 leading-relaxed">
+                        Traditional ventilation relies on transporting waste air through massive vertical shafts. In high-rise buildings, this fights against formidable physical forces. The <strong>Stack Effect</strong> (thermal buoyancy) creates pressure columns that fight roof fans, while the <strong>Wind Dam Effect</strong> creates backdrafts at horizontal terminations. The result? "Dead Zones" where odors stagnate.
+                    </p>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <span class="flex-shrink-0 h-6 w-6 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold text-sm mt-1">1</span>
+                            <span class="ml-4 text-slate-700"><strong>Vertical Constraint:</strong> Thermal buoyancy creates up to 250 Pa of pressure differential in tall towers, neutralizing standard fan curves.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="flex-shrink-0 h-6 w-6 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold text-sm mt-1">2</span>
+                            <span class="ml-4 text-slate-700"><strong>Horizontal Constraint:</strong> Wind loading on facades acts as a "dam," preventing exhaust and causing re-entrainment into balconies.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6 border border-slate-100 card-hover">
+                    <h3 class="text-lg font-semibold text-slate-800 mb-4 text-center">Pressure Conflict: Fan vs. Nature</h3>
+                    <div class="chart-container">
+                        <canvas id="stackEffectChart"></canvas>
+                    </div>
+                    <p class="text-xs text-center text-slate-400 mt-2">Comparison of Mechanical Fan Pressure vs. Counter-acting Natural Forces in a 50-Story Building</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: THE SOLUTION (KILL & CAPTURE) -->
+        <!-- 
+            Goal: Explain the MSL technology.
+            Vis: Line Chart showing Pathogen Reduction (Log Scale) over time/passes.
+        -->
+        <section id="solution" class="scroll-mt-20 bg-slate-50 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-slate-900 mb-4">The Solution: "Kill & Capture" Matrix</h2>
+                    <p class="text-lg text-slate-600 max-w-3xl mx-auto">
+                        Instead of transporting air, we treat it <strong>In-Situ</strong>. We utilize a synergistic protocol of biochemical remediation that neutralizes contaminants at the source.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                    <!-- Concept Card 1 -->
+                    <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-blue-500">
+                        <h3 class="text-xl font-bold text-slate-900 mb-3">1. Surface Disinfection</h3>
+                        <p class="text-slate-600 mb-4"><strong>Technology:</strong> Ceiling-Mounted UVC Emitters (IUVA Class S).</p>
+                        <p class="text-slate-600">Targeted irradiation of waste bins and floors suppresses bacterial colonization, stopping odors before they are generated.</p>
+                    </div>
+                    <!-- Concept Card 2 -->
+                    <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-blue-500">
+                        <h3 class="text-xl font-bold text-slate-900 mb-3">2. Air Disinfection</h3>
+                        <p class="text-slate-600 mb-4"><strong>Technology:</strong> Air Purification Modules (IUVA Class A) with MERV 6+ Filtration.</p>
+                        <p class="text-slate-600">Filters remove particulate "shields," exposing pathogens to 253.7nm UVC light for immediate DNA inactivation.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 border border-slate-100">
+                    <h3 class="text-lg font-semibold text-slate-800 mb-4 text-center">Pathogen Inactivation Efficiency (UVC 253.7nm)</h3>
+                    <div class="chart-container">
+                        <canvas id="killRateChart"></canvas>
+                    </div>
+                    <p class="text-xs text-center text-slate-400 mt-2">Exponential decay of bio-aerosols over cumulative UV exposure (Time/Passes)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: APPLICATIONS & SPACE SAVINGS -->
+        <!-- 
+            Goal: Compare standard design vs MSL design regarding space and infrastructure.
+            Vis: Stacked Bar Chart (Space Utilization).
+        -->
+        <section id="applications" class="scroll-mt-20">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="order-2 lg:order-1 bg-white rounded-xl shadow-lg p-6 border border-slate-100 card-hover">
+                    <h3 class="text-lg font-semibold text-slate-800 mb-4 text-center">Floor Area Utilization: Riser vs. No Riser</h3>
+                    <div class="chart-container">
+                        <canvas id="spaceSavingsChart"></canvas>
+                    </div>
+                    <p class="text-xs text-center text-slate-400 mt-2">Analysis of a typical 40-story residential tower floor plate.</p>
+                </div>
+                <div class="order-1 lg:order-2">
+                    <h2 class="text-3xl font-bold text-slate-900 mb-4 border-l-4 border-orange-500 pl-4">Applied Methodology</h2>
+                    <p class="text-lg text-slate-600 mb-6 leading-relaxed">
+                        By deleting the vertical shaft, we return valuable square footage to the developer.
+                    </p>
+                    <div class="space-y-6">
+                        <div class="flex flex-col">
+                            <h4 class="font-bold text-slate-900">Residential Floors</h4>
+                            <p class="text-slate-600 text-sm">Transient waste (bagged). Ceiling units recirculate and sterilize air (15 ACH), maintaining a neutral, odor-free environment without vertical ducts.</p>
+                        </div>
+                        <div class="flex flex-col">
+                            <h4 class="font-bold text-slate-900">Material Recovery Facility (MRF)</h4>
+                            <p class="text-slate-600 text-sm">High-volume sorting. Industrial-grade emitters oxidize VOCs, allowing flexible exhaust locations (e.g., street level) rather than mandatory roof termination.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: REGULATORY PATHWAY -->
+        <!-- 
+            Goal: Explain compliance via IAQP vs VRP.
+            Vis: Grouped Bar Chart showing Contaminant Levels vs ASHRAE Limits.
+        -->
+        <section id="compliance" class="scroll-mt-20 bg-slate-900 text-white rounded-2xl p-8 lg:p-12 shadow-2xl">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                <div class="lg:col-span-1 space-y-6">
+                    <h2 class="text-3xl font-bold text-white mb-4">The Code Unlock</h2>
+                    <p class="text-slate-300 leading-relaxed">
+                        <strong>ASHRAE 62.1</strong> classifies Garbage Rooms as "Air Class 3," typically mandating 100% exhaust. However, we utilize the <strong>IAQ Procedure (Section 6.3)</strong>.
+                    </p>
+                    <p class="text-slate-300 leading-relaxed">
+                        By cleaning the air and validating via mass-balance analysis, we <strong>redesignate</strong> the air to "Class 2" (Section 5.13). This legally removes the requirement for a dedicated vertical shaft.
+                    </p>
+                    <div class="border border-slate-700 rounded-lg p-4 bg-slate-800/50">
+                        <p class="text-sm font-mono text-orange-400">"If air leaving a space... passes through an air-cleaning system, redesignation... shall be permitted."</p>
+                        <p class="text-xs text-slate-500 mt-2 text-right">- ASHRAE 62.1, Sec 5.13.2.1</p>
+                    </div>
+                </div>
+                <div class="lg:col-span-2">
+                    <h3 class="text-lg font-semibold text-slate-200 mb-6 text-center">Contaminant Control: VRP vs. MSL (IAQP)</h3>
+                    <!-- Using Plotly for a slightly more advanced engineering look -->
+                    <div id="compliancePlot" style="width:100%; height:350px;"></div>
+                    <p class="text-xs text-center text-slate-500 mt-2">Comparison of Indoor Contaminant Levels against EPA Design Limits (DL)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: BENEFITS SUMMARY (KPIs) -->
+        <section class="py-12">
+            <h2 class="text-2xl font-bold text-center text-slate-900 mb-10">The Economic Algorithm</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="text-center p-6 bg-white rounded-lg shadow-sm border border-slate-200">
+                    <div class="text-4xl font-extrabold text-blue-600 mb-2">15</div>
+                    <div class="text-sm font-semibold text-slate-600 uppercase tracking-wide">ACH<br>Treatment Rate</div>
+                </div>
+                <div class="text-center p-6 bg-white rounded-lg shadow-sm border border-slate-200">
+                    <div class="text-4xl font-extrabold text-orange-500 mb-2">0</div>
+                    <div class="text-sm font-semibold text-slate-600 uppercase tracking-wide">Vertical Shafts<br>Required</div>
+                </div>
+                <div class="text-center p-6 bg-white rounded-lg shadow-sm border border-slate-200">
+                    <div class="text-4xl font-extrabold text-blue-600 mb-2">High</div>
+                    <div class="text-sm font-semibold text-slate-600 uppercase tracking-wide">Pathogen<br>Reduction</div>
+                </div>
+                <div class="text-center p-6 bg-white rounded-lg shadow-sm border border-slate-200">
+                    <div class="text-4xl font-extrabold text-orange-500 mb-2">₱₱₱</div>
+                    <div class="text-sm font-semibold text-slate-600 uppercase tracking-wide">Sellable Area<br>Recovered</div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-50 border-t border-slate-200 py-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-slate-500 text-sm">© 2025 MSL Global Corporation. All rights reserved.</p>
+            <p class="text-slate-400 text-xs mt-2">Performance-Based Ventilation Strategy • ASHRAE 62.1 Compliance Path</p>
+            <div class="mt-4 text-xs text-slate-400 space-y-1">
+                <p>References:</p>
+                <p>1. ANSI/ASHRAE Standard 62.1-2022, "Ventilation and Acceptable Indoor Air Quality," Sections 5.13, 6.2, 6.3, and Informative Appendix N.</p>
+                <p>2. Kowalski, W. (2009). "Ultraviolet Germicidal Irradiation Handbook: UVGI for Air and Surface Disinfection," Chapters 2, 4, 10, 18, and 19. Springer-Verlag Berlin Heidelberg.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Charts -->
+    <script>
+        // Utility function to wrap labels for Chart.js
+        function wrapLabel(str, maxChars) {
+            if (str.length <= maxChars) return str;
+            const words = str.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+
+            for (let i = 1; i < words.length; i++) {
+                if (currentLine.length + 1 + words[i].length <= maxChars) {
+                    currentLine += ' ' + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        // Common Tooltip Configuration
+        const commonTooltip = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    } else {
+                        return label;
+                    }
+                }
+            }
+        };
+
+        // --- CHART 1: Stack Effect vs Fan (Bar Chart) ---
+        const ctxStack = document.getElementById('stackEffectChart').getContext('2d');
+        const stackChart = new Chart(ctxStack, {
+            type: 'bar',
+            data: {
+                labels: [wrapLabel('Standard Roof Fan Capacity', 15), wrapLabel('Stack Effect Pressure (Winter)', 15), wrapLabel('Wind Loading Pressure', 15)],
+                datasets: [{
+                    label: 'Pressure (Pascals)',
+                    data: [150, 200, 180], // Example data showing natural forces exceeding fan capacity
+                    backgroundColor: [
+                        'rgba(59, 130, 246, 0.7)', // Blue for Fan
+                        'rgba(249, 115, 22, 0.7)', // Orange for Stack Effect
+                        'rgba(249, 115, 22, 0.5)'  // Lighter Orange for Wind
+                    ],
+                    borderColor: [
+                        'rgb(59, 130, 246)',
+                        'rgb(249, 115, 22)',
+                        'rgb(249, 115, 22)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: commonTooltip,
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: 'Pressure Differentials in High-Rise Context'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Pressure (Pa)' }
+                    }
+                }
+            }
+        });
+
+        // --- CHART 2: Kill Rate (Line Chart) ---
+        const ctxKill = document.getElementById('killRateChart').getContext('2d');
+        const killChart = new Chart(ctxKill, {
+            type: 'line',
+            data: {
+                labels: ['0 min', '1 min', '2 min', '3 min', '4 min (1 ACH)'],
+                datasets: [{
+                    label: 'Bio-Aerosol Concentration',
+                    data: [100, 30, 5, 0.5, 0.01], // Exponential decay
+                    borderColor: 'rgb(59, 130, 246)',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    fill: true,
+                    tension: 0.3,
+                    pointBackgroundColor: 'rgb(249, 115, 22)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(249, 115, 22)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: commonTooltip,
+                    legend: { display: true }
+                },
+                scales: {
+                    y: {
+                        title: { display: true, text: '% Contaminant Remaining' },
+                        type: 'logarithmic',
+                        min: 0.01,
+                        max: 100
+                    }
+                }
+            }
+        });
+
+        // --- CHART 3: Space Savings (Stacked Bar) ---
+        const ctxSpace = document.getElementById('spaceSavingsChart').getContext('2d');
+        const spaceChart = new Chart(ctxSpace, {
+            type: 'bar',
+            data: {
+                labels: [wrapLabel('Traditional Vertical Riser', 15), wrapLabel('MSL In-Situ Solution', 15)],
+                datasets: [
+                    {
+                        label: 'Sellable/Usable Area',
+                        data: [85, 98], // 85% usable with shaft, 98% without
+                        backgroundColor: 'rgba(59, 130, 246, 0.8)',
+                    },
+                    {
+                        label: 'Lost Shaft Space',
+                        data: [15, 2], // 15% lost to shaft, 2% for unit
+                        backgroundColor: 'rgba(249, 115, 22, 0.8)',
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: commonTooltip,
+                    legend: { position: 'top' },
+                },
+                scales: {
+                    x: { stacked: true },
+                    y: { 
+                        stacked: true,
+                        title: { display: true, text: 'Floor Plate Utilization (%)' },
+                        max: 100
+                    }
+                }
+            }
+        });
+
+        // --- CHART 4: Compliance (Plotly Bar) ---
+        // Using Plotly to demonstrate library usage and create a distinct engineering look for the data section
+        const complianceData = [
+            {
+                x: ['Standard Design', 'MSL Performance Design'],
+                y: [100, 20], // VOC Levels
+                name: 'VOC Concentration (Units)',
+                type: 'bar',
+                marker: { color: '#94a3b8' } // Slate 400
+            },
+            {
+                x: ['Standard Design', 'MSL Performance Design'],
+                y: [100, 5], // Bio-load
+                name: 'Bio-Aerosol Load (%)',
+                type: 'bar',
+                marker: { color: '#f97316' } // Orange 500
+            }
+        ];
+
+        const complianceLayout = {
+            barmode: 'group',
+            title: false,
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            font: { family: 'Inter, sans-serif', color: '#e2e8f0' }, // Light text for dark bg
+            margin: { t: 20, b: 40, l: 40, r: 20 },
+            showlegend: true,
+            legend: { orientation: 'h', y: 1.1 },
+            yaxis: { 
+                gridcolor: '#334155',
+                title: 'Relative Concentration' 
+            },
+            xaxis: {
+                tickfont: { size: 12 }
+            }
+        };
+
+        const complianceConfig = { responsive: true, displayModeBar: false };
+
+        Plotly.newPlot('compliancePlot', complianceData, complianceLayout, complianceConfig);
+
+    </script>
+</body>
+</html>
